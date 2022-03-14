@@ -112,7 +112,7 @@ export interface RecyclerListViewProps {
     scrollViewProps?: object;
     applyWindowCorrection?: (offsetX: number, offsetY: number, windowCorrection: WindowCorrection) => void;
     onItemLayout?: (index: number) => void;
-    stopRenderingOnAnimation : any; // for now it is a SharedValue
+    stopRenderingOnAnimation?: any; // for now it is a SharedValue
 }
 
 export interface RecyclerListViewState {
@@ -700,8 +700,9 @@ export default class RecyclerListView<P extends RecyclerListViewProps, S extends
     private _onScroll = (offsetX: number, offsetY: number, rawEvent: ScrollEvent): void => {
         // correction to be positive to shift offset upwards; negative to push offset downwards.
         // extracting the correction value from logical offset and updating offset of virtual renderer.
-        if(this.props?.stopRenderingOnAnimation?.value)
+        if (this.props.stopRenderingOnAnimation && this.props.stopRenderingOnAnimation.value) {
             return;
+        }
         this._virtualRenderer.updateOffset(offsetX, offsetY, true, this._getWindowCorrection(offsetX, offsetY, this.props));
 
         if (this.props.onScroll) {
